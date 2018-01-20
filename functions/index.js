@@ -21,7 +21,7 @@ const plswork = admin.database().ref('people/')
 //   firebase.initializeApp(config);
 
 
-
+const NUMBER_ARG = 'number';
 exports.NextUp = functions.https.onRequest((request, response) => {
   const app = new App({request, response});
   console.log('Request headers: ' + JSON.stringify(request.headers));
@@ -67,13 +67,13 @@ exports.NextUp = functions.https.onRequest((request, response) => {
   }
   
   function ranking (app) {
-  	app.ask(request);
-  	app.ask(response);
+    let number = app.getArgument(NUMBER_ARG);
+    app.ask(number);
   }
   
   function top (app) {
-  	app.ask(request);
-  	app.ask(response);
+    let number = app.getArgument(NUMBER_ARG);
+    app.ask(number);
   }
   
   let actionMap = new Map();

@@ -16,14 +16,34 @@
   var formData = 'test';
  function ok(){
 
-  firebase.database().ref('people/' + 'test12').set({
-      firstname: 'hello',
-      lastname: 'test12'
-  });
-}
+//   firebase.database().ref('people/' + 'test12').set({
+//       firstname: 'hello',
+//       lastname: 'test12'
+//   });
+// }
 
-firebase.database().ref('people/' ).once('value').then(function (snapshot) {
-
-  console.log(snapshot.val());
+let SONG_ID = '123432';
+let upvote='12nlhul8n';
+user_id = 'test1234';
+user_id2 = 'test12345';
+firebase.database().ref('songs/' + SONG_ID).set({
+  SongName:'baby',
+  artist:'justin beiber',
+  time:'3:30',
+  picture:'jpg',
+  upvote:'USER_ID',
+  downvote:'',
 })
 
+// firebase.database().ref('songs/' + SONG_ID.child()
+firebase.database().ref('songs/' + SONG_ID + '/' + upvote).set({
+  user_id:'jpg'
+})
+firebase.database().ref('songs/' + SONG_ID + '/' + upvote).set({
+  user_id2:'jpg'
+})
+// firebase.database().ref('people/' ).once('value').then(function (snapshot) {
+
+//   console.log(snapshot.val());
+// })
+ }
