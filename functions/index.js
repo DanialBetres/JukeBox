@@ -247,19 +247,19 @@ function ranking (app) {
     })
     if(n <= orderedlist.length){
     	let song_list = []
-    	let artist_list = []
+      let artist_list = []
+      let vote_count = []
     	for(let i=0; i<n; i++){
     		song_list.push(orderedlist[i].SongName)
-    		artist_list.push(orderedlist[i].artist[0].name)
+        artist_list.push(orderedlist[i].artist[0].name)
+        vote_count.push(orderedlist[i].votecount);
     	}
     	
     	let songs = '';
     	for(let t=0; t<n; t++){
-    		songs += song_list[t] + ' by ' + artist_list[t] + ', ';
+    		songs += song_list[t] + ' by ' + artist_list[t] + ': ' + vote_count[t] + ' votes, ';
     	}
     	app.ask('Here are the top '+ n +' songs: ' + songs);
-    	
-    	
     }
     else{
     	app.ask('There are only ' + orderedlist.length + ' songs');
