@@ -74,6 +74,17 @@ exports.NextUp = functions.https.onRequest((request, response) => {
   function play (app) {
   	app.ask("Playing");
   }
+
+  function add (app) {
+    var x = app.getRawInput();
+   var toIndex =  x.indexOf('by');
+
+   var  songname = x.substring(4,toIndex-1);
+   var artist = x.substring(toIndex+2,x.length);
+app.ask( "song name: " + songname + ", artist:" + artist);
+
+var songName
+  }
   
   function ranking (app) {
     let number = app.getArgument(NUMBER_ARG);
@@ -143,6 +154,7 @@ exports.NextUp = functions.https.onRequest((request, response) => {
   actionMap.set('ranking', ranking);
   actionMap.set('top', top);
   actionMap.set('quit', quit);
+  actionMap.set('add',add)
   app.handleRequest(actionMap);
 });
 
