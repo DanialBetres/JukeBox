@@ -59,12 +59,40 @@ firebase.database().ref('songs/' + SONG_ID + '/upvote').child(user_id2).set('YAY
 
 // retrieve ALL song Info
 function RetrieveSong() {
-  let Song_ID = 121341 // INPUT THE SONG ID OF INTEREST 
+  let Song_ID = '123432' // INPUT THE SONG ID OF INTEREST 
   firebase.database().ref('songs/' + SONG_ID).once('value', snap => {
     console.log(snap.val());
   })
+
+  firebase.database().ref('songs/').orderByChild('votecount').once('value', snap => {
+    console.log(snap.val());
+    let x = snap.val();
+    // for(property in x){
+    //   console.log(property);
+    // }
+
+    for(var propName in x) {
+    if(x.hasOwnProperty(propName)) {
+        var propValue = x[propName];
+        console.log(propValue);
+        // do something with each element here
+    }
+}
+  })
 }
 
+
+function OrderedSongs(){
+  let orderedlist = [];
+  firebase.database().ref('songs/').orderByChild('votecount').once('value', snap => {
+    console.log(snap.val());
+  })
+
+  // firebase.database().ref("songs").orderByValue
+  firebase.database().ref('songs/').once('value', snap => {
+    console.log(snap.val());
+  })
+}
 
 // DOWN VOTE SONG
 function DecrementVote(){
