@@ -14,7 +14,7 @@ var spotifyApi = new SpotifyWebApi({
   clientSecret: 'bf06119abcd444639c415c3f09579bb0 ',
   redirectUri: 'http://localhost:8888/callback'
 });
-spotifyApi.setAccessToken('BQCZma815UpbmqLFfcrJ5zbsFysgmmUZR_Ts8u_eEIwoQ0vD1z7kB4gRMGG-GYSZOBHlSuwSTS7NoyGMvKsfgxnIEsQo954NZDey5ZJbJ-Xp75Bi-7VEoMfOay6_xJs8GyNY8AqC8wZsHQ');
+spotifyApi.setAccessToken('BQBLWiT4Urv8cdCvLofp3EcVXmLa7kMeLzsj1ZYPsb2XmqFVPyCSt8m8SODnY6JaDdqZ-eLHHO61xsUEIqQ4aoZUwr3YTyvDxk1TWjwgB0GfZVpCqDdpD2DGNKHe4cWvBal3iZ8KgJv4xw');
 
 
 
@@ -119,18 +119,18 @@ spotifyApi.searchTracks('love').then(function(data) {
   var uri;
   var votecount;
 
-   spotifyApi.searchTracks(songname).then(function(data) {
+   spotifyApi.searchTracks(songname + ' ' + artist).then(function(data) {
     song = data.body.tracks.items[0];
     SongName = song.name;
     artists = song.artists;
-    picture = song.album.images[0];
+    picture = song.album.images[0].url;
     songId = song.id;
     time = song.duration_ms;
     upvote = 'Empty';
     uri = song.uri;
     votecount = 0;
     WritetoDatabase();
-
+	
    })
 function WritetoDatabase(){
     admin.database().ref('songs/' + songId).set({
@@ -145,7 +145,7 @@ function WritetoDatabase(){
     });
    
   }
-    app.ask( "song name: " + songname + ", artist:" + artist + "    " + songId);
+    app.tell( "adding " + songname + " to the queue");
 }
 function upvote(app){
   let number = app.getArgument(NUMBER_ARG);
