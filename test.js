@@ -13,49 +13,38 @@
 
   // var database = firebase.database();
 
-  var formData = 'test';
-  let SONG_ID = '123432';
-  
- function ok(){
+  var formData = 'test';;
+  var num = 0;
+  var SONG_ID = '';
+  function myfunction(){
+  	SONG_ID = document.getElementById('songid').value;
+  	console.log(SONG_ID);
+  	alert(SONG_ID);
+  }
+ 
+function addSong() {
+	let song_id = Math.floor(Math.random() * 1000) + 1000
+	let vote = Math.floor(Math.random() * 20) + 1
+	firebase.database().ref('songs/').once('value').then(function(snapshot) {
+    	var num = snapshot.numChildren();
+    	if(num <= 9){
+		firebase.database().ref('songs/'+ song_id).set({
+			SongName:'random',
+  			artist:'random',
+  			time:'3:30',
+  			picture:'jpg',
+  			upvote: 'Empty',
+  			votecount: vote
+		})
+	}
+  	});
+}
 
-//   firebase.database().ref('people/' + 'test12').set({
-//       firstname: 'hello',
-//       lastname: 'test12'
-//   });
-// }
-
-// let upvote='12nlhul8n';
-let user_id = 'test1234';
-let user_id2 = 'test12345';
-let pictureAddress = "jpg";
-
-firebase.database().ref('songs/' + SONG_ID).set({
-  SongName:'baby',
-  artist:'justin beiber',
-  time:'3:30',
-  picture:'jpg',
-  upvote:'USER_ID',
-  downvote:'',
-  votecount:0
-})
-
-// firebase.database().ref('songs/' + SONG_ID.child()
-
-// firebase.database().ref('songs/' + SONG_ID + '/' + upvote).child('testtt').setValue(
-//   "HOW DOES THIS WORK"
-// )
-
-firebase.database().ref('songs/' + SONG_ID + '/upvote').child(user_id).set(
- pictureAddress
-)
-
-firebase.database().ref('songs/' + SONG_ID + '/upvote').child(user_id).set(true)
-
-// 
-firebase.database().ref('songs/' + SONG_ID + '/upvote').child(user_id2).set('YAYYY')
-
-
- }
+function removeSong() {
+	SONG_ID = document.getElementById('songid').value;
+	firebase.database().ref('songs/' + SONG_ID).remove()
+	
+}
 
 // retrieve ALL song Info
 function RetrieveSong() {
@@ -81,6 +70,10 @@ function RetrieveSong() {
   })
 }
 
+function returnOrder() {
+	
+}
+
 
 function OrderedSongs(){
   let orderedlist = [];
@@ -96,7 +89,7 @@ function OrderedSongs(){
 
 // DOWN VOTE SONG
 function DecrementVote(){
-  
+  	SONG_ID = document.getElementById('songid').value;
     const user_id3 = '4314';
 
     firebase.database().ref('songs/' + SONG_ID + '/upvote/' + user_id3).once('value', snap => {
@@ -128,7 +121,7 @@ function DecrementVote(){
 
 // UP VOTE SONG
   function IncrementVote(){
-    
+    	SONG_ID = document.getElementById('songid').value;
       const user_id3 = '4314';
   
       firebase.database().ref('songs/' + SONG_ID + '/upvote/' + user_id3).once('value', snap => {
