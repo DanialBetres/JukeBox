@@ -77,15 +77,17 @@ function returnOrder() {
 
 function OrderedSongs(){
   let orderedlist = [];
-  firebase.database().ref('songs/').orderByChild('votecount').once('value', snap => {
-    console.log(snap.val());
-  })
-
-  // firebase.database().ref("songs").orderByValue
   firebase.database().ref('songs/').once('value', snap => {
-    console.log(snap.val());
+    orderedlist = Object.values(snap.val());
+    orderedlist.sort(function(a,b) {
+      return b.votecount - a.votecount;
+    })
+    console.log(orderedlist);
   })
 }
+
+
+
 
 // DOWN VOTE SONG
 function DecrementVote(){
