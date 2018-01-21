@@ -14,7 +14,7 @@ var spotifyApi = new SpotifyWebApi({
   clientSecret: 'bf06119abcd444639c415c3f09579bb0 ',
   redirectUri: 'http://localhost:8888/callback'
 });
-spotifyApi.setAccessToken('BQBLWiT4Urv8cdCvLofp3EcVXmLa7kMeLzsj1ZYPsb2XmqFVPyCSt8m8SODnY6JaDdqZ-eLHHO61xsUEIqQ4aoZUwr3YTyvDxk1TWjwgB0GfZVpCqDdpD2DGNKHe4cWvBal3iZ8KgJv4xw');
+spotifyApi.setAccessToken('BQAC6lhoWY-w-yPmNcnjZ5Q6BIiv2CZN5MduFsMhKs4ouOYBAkGyyDUzMOGD4hN5Nh9LiXYYSwouDde5HszP9d87kdaHyVfnNwMOhQbpiEGLc51hh6hcPjVUwxKiUgboGAGybO5suUZ45A');
 
 
 
@@ -62,10 +62,10 @@ exports.NextUp = functions.https.onRequest((request, response) => {
   console.log('Request headers: ' + JSON.stringify(request.headers));
   console.log('Request body: ' + JSON.stringify(request.body));
   function pause (app) {
-spotifyApi.searchTracks('love').then(function(data) {
-  var x = data.body.tracks.items[0].name;
-  app.ask(x);
-})
+// spotifyApi.searchTracks('love').then(function(data) {
+//   var x = data.body.tracks.items[0].name;
+//   app.ask(x);
+};
       // var x;
       // admin.database().ref('people/' + 'teest').set({
 
@@ -93,7 +93,7 @@ spotifyApi.searchTracks('love').then(function(data) {
   
     //   app.ask(response);
       
-  }
+  
   
   function next (app) {
   	app.ask("Skipping to the next song");
@@ -175,7 +175,7 @@ function upvote(app){
     }
    }
    )
-   app.ask('Upvoted!');
+   app.tell('Upvoted!');
  }
 
  
@@ -207,7 +207,7 @@ function upvote(app){
     }
    }
    )
-   app.ask('Downvoted!');
+   app.tell('Downvoted!');
 }
 
 function ranking (app) {
