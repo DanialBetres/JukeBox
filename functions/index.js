@@ -143,6 +143,68 @@ var songName
   })
   }
   
+  function upvote(app){
+  	let number = app.getArgument(NUMBER_ARG);
+    let n = parseInt(number);
+    
+    let orderedlist = [];
+  	admin.database().ref('songs/').once('value', snap => {
+  		let x = snap.val();
+    	orderedlist = Object.keys(x).map(function (key) {
+    		return x[key];
+    	});
+    	orderedlist.sort(function(a,b) {
+      		return b.votecount - a.votecount;
+    	})
+    	if(n <= orderedlist.length){
+    		let req_id = orderedlist[n - 1].songId;
+    		admin.database().ref('songs/' + req_id + '/votecount').once('value', snap => {
+      			let curr = snap.val()
+		    	admin.database().ref('songs/' + req_id + '/votecount').transaction(function(currentVote) {
+		      		var newValue = currentVote + 1;
+		      		return newValue;
+		    	})
+		  	}
+		)}
+    	else{
+    		app.ask('There are only ' + orderedlist.length + ' songs');
+    	}
+   	}
+   	)
+   	app.ask('Upvoted!');
+   }
+
+  function downvote(app){
+  	let number = app.getArgument(NUMBER_ARG);
+    let n = parseInt(number);
+    
+    let orderedlist = [];
+  	admin.database().ref('songs/').once('value', snap => {
+  		let x = snap.val();
+    	orderedlist = Object.keys(x).map(function (key) {
+    		return x[key];
+    	});
+    	orderedlist.sort(function(a,b) {
+      		return b.votecount - a.votecount;
+    	})
+    	if(n <= orderedlist.length){
+    		let req_id = orderedlist[n - 1].songId;
+    		admin.database().ref('songs/' + req_id + '/votecount').once('value', snap => {
+      			let curr = snap.val()
+		    	admin.database().ref('songs/' + req_id + '/votecount').transaction(function(currentVote) {
+		      		var newValue = currentVote - 1;
+		      		return newValue;
+		    	})
+		  	}
+		)}
+    	else{
+    		app.ask('There are only ' + orderedlist.length + ' songs');
+    	}
+   	}
+   	)
+   	app.ask('Downvoted!');
+  }
+  
   function quit (app) {
     app.tell("Closing");
   }
@@ -154,7 +216,9 @@ var songName
   actionMap.set('ranking', ranking);
   actionMap.set('top', top);
   actionMap.set('quit', quit);
-  actionMap.set('add',add)
+  actionMap.set('add',add);
+  actionMap.set('upvote', upvote);
+  actionMap.set('downvote', downvote);
   app.handleRequest(actionMap);
 });
 
