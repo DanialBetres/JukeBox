@@ -70,10 +70,6 @@ function RetrieveSong() {
   })
 }
 
-function returnOrder() {
-	
-}
-
 
 function OrderedSongs(){
   let orderedlist = [];

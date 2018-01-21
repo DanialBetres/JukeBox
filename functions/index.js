@@ -20,6 +20,17 @@ const plswork = admin.database().ref('people/')
 //   };
 //   firebase.initializeApp(config);
 
+/*function OrderedSongs(){
+  let orderedlist = [];
+  admin.database().ref('songs/').once('value', snap => {
+    orderedlist = Object.values(snap.val());
+    orderedlist.sort(function(a,b) {
+      return b.votecount - a.votecount;
+    })
+  })
+  return orderedlist;
+}
+*/
 
 const NUMBER_ARG = 'number';
 exports.NextUp = functions.https.onRequest((request, response) => {
@@ -57,23 +68,72 @@ exports.NextUp = functions.https.onRequest((request, response) => {
   }
   
   function next (app) {
-  	app.ask(request);
-  	app.ask(response);
+  	app.ask("Skipping to the next song");
   }
   
   function play (app) {
-  	app.ask(request);
-  	app.ask(response);
+  	app.ask("Playing");
   }
   
   function ranking (app) {
     let number = app.getArgument(NUMBER_ARG);
-    app.ask(number);
+    let n = parseInt(number);
+    
+    let orderedlist = [];
+  	admin.database().ref('songs/').once('value', snap => {
+  	let x = snap.val();
+    orderedlist = Object.keys(x).map(function (key) {
+    	return x[key];
+    });
+    orderedlist.sort(function(a,b) {
+      return b.votecount - a.votecount;
+    })
+    if(n <= orderedlist.length){
+    	app.ask('the song is: ' + orderedlist[n - 1].SongName + ' by ' + ((orderedlist[n - 1].artist[0]).name));
+    }
+    else{
+    	app.ask('There are only ' + orderedlist.length + ' songs');
+    }
+  })
   }
   
   function top (app) {
     let number = app.getArgument(NUMBER_ARG);
-    app.ask(number);
+    let n = parseInt(number);
+    
+    let orderedlist = [];
+  	admin.database().ref('songs/').once('value', snap => {
+  	let x = snap.val();
+    orderedlist = Object.keys(x).map(function (key) {
+    	return x[key];
+    });
+    orderedlist.sort(function(a,b) {
+      return b.votecount - a.votecount;
+    })
+    if(n <= orderedlist.length){
+    	let song_list = []
+    	let artist_list = []
+    	for(let i=0; i<n; i++){
+    		song_list.push(orderedlist[i].SongName)
+    		artist_list.push(orderedlist[i].artist[0].name)
+    	}
+    	
+    	let songs = '';
+    	for(let t=0; t<n; t++){
+    		songs += song_list[t] + ' by ' + artist_list[t] + ', ';
+    	}
+    	app.ask('Here are the top '+ n +' songs: ' + songs);
+    	
+    	
+    }
+    else{
+    	app.ask('There are only ' + orderedlist.length + ' songs');
+    }
+  })
+  }
+  
+  function quit (app) {
+    app.tell("Closing");
   }
   
   let actionMap = new Map();
@@ -82,6 +142,7 @@ exports.NextUp = functions.https.onRequest((request, response) => {
   actionMap.set('play', play);
   actionMap.set('ranking', ranking);
   actionMap.set('top', top);
+  actionMap.set('quit', quit);
   app.handleRequest(actionMap);
 });
 
